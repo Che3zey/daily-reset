@@ -1,0 +1,5 @@
+The apk file for the download is in the folder labeled releases
+
+AI usage
+I used ChatGPT more than I would have liked to 
+I had to have it walk me through practically every step of Setting up Hive for storing persistent data, how to get firebase working for user authentication, how to get dark mode working, how to set up push notifications, and how to turn the app into a downloadable apk. I wish I didn't have to do that because I feel stupid but I really just didn't have time to sit down and learn all of this stuff on my own with all the hours I had to get for Capstone and Co-op this year.
