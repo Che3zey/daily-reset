@@ -1,7 +1,7 @@
 class Task {
   final String id;
   final String title;
-  final String type; // daily, weekly, deadline
+  final String type; // daily weekly and deadline
   final DateTime? deadline;
 
   bool isCompleted;
@@ -16,7 +16,7 @@ class Task {
     this.completedAt,
   });
 
-  // 🔥 Convert Task → JSON (for Hive storage)
+  // to json
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -28,35 +28,34 @@ class Task {
     };
   }
 
-  // 🔥 Convert JSON → Task (for loading from Hive)
+  // from json
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
       title: json['title'],
       type: json['type'],
       deadline: json['deadline'] != null
-          ? DateTime.parse(json['deadline'])
+          ? DateTime.tryParse(json['deadline'])
           : null,
       isCompleted: json['isCompleted'] ?? false,
       completedAt: json['completedAt'] != null
-          ? DateTime.parse(json['completedAt'])
+          ? DateTime.tryParse(json['completedAt'])
           : null,
     );
   }
 
-  // 🔥 helper: checks if task is expired
+  // hospice employee (helpers)
   bool get isExpired {
     if (type != 'deadline' || deadline == null) return false;
     return DateTime.now().isAfter(deadline!);
   }
 
-  // 🔥 helper: days remaining
   int? get daysLeft {
     if (deadline == null) return null;
     return deadline!.difference(DateTime.now()).inDays;
   }
 
-  // 🔥 copyWith (state safety)
+  // copy with
   Task copyWith({
     String? id,
     String? title,

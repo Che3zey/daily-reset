@@ -3,113 +3,93 @@ import '../models/task.dart';
 
 class TaskStorage {
   static const String boxName = "tasksBox";
-  static const String key = "tasks";
 
-  // 🔥 NEW KEYS FOR RESET SYSTEM
-  static const String dailyKey = "lastDailyReset";
-  static const String weeklyKey = "lastWeeklyReset";
+  static const String tasksKey = "tasks";
+
+  // challenge selection IDs
+  static const String dailyIdsKey = "daily_ids";
+  static const String weeklyIdsKey = "weekly_ids";
+
+  // this is reset tracking
+  static const String dailyResetKey = "daily_reset";
+  static const String weeklyResetKey = "weekly_reset";
 
   static Box? _box;
 
-  // 🔥 OPEN BOX ONCE (FIXES WEB PERSISTENCE ISSUE)
   static Future<Box> _getBox() async {
-    if (_box != null && _box!.isOpen) {
-      return _box!;
-    }
-
+    if (_box != null && _box!.isOpen) return _box!;
     _box = await Hive.openBox(boxName);
     return _box!;
   }
 
-  // 🔥 SAVE TASKS
+  // tasks vvv
+
   static Future<void> saveTasks(List<Task> tasks) async {
     final box = await _getBox();
-
     final data = tasks.map((t) => t.toJson()).toList();
-
-    await box.put(key, data);
-
-    print("💾 SAVED TASKS: ${tasks.length}");
+    await box.put(tasksKey, data);
   }
 
-  // 🔥 LOAD TASKS
   static Future<List<Task>> loadTasks() async {
     final box = await _getBox();
+    final raw = box.get(tasksKey);
 
-    final raw = box.get(key);
+    if (raw == null || raw is! List) return [];
 
-    print("📦 RAW HIVE DATA: $raw");
-
-    if (raw == null) {
-      print("⚠️ No data found in Hive");
-      return [];
-    }
-
-    if (raw is! List) {
-      print("⚠️ Invalid Hive format");
-      return [];
-    }
-
-    final tasks = <Task>[];
-
-    for (final item in raw) {
-      try {
-        if (item is Map) {
-          tasks.add(Task.fromJson(
-            Map<String, dynamic>.from(item),
-          ));
-        } else {
-          print("⚠️ Skipping invalid item: $item");
-        }
-      } catch (e) {
-        print("❌ Parse error: $e");
-      }
-    }
-
-    print("📦 TASK COUNT AFTER PARSE: ${tasks.length}");
-    return tasks;
+    return raw
+        .map((e) => Task.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
 
-  // ============================
-  // 🔥 DAILY RESET STORAGE
-  // ============================
+  //ID for dailies vvv
+
+  static Future<void> saveDailyIds(List<String> ids) async {
+    final box = await _getBox();
+    await box.put(dailyIdsKey, ids);
+  }
+
+  static Future<List<String>> loadDailyIds() async {
+    final box = await _getBox();
+    final data = box.get(dailyIdsKey, defaultValue: []);
+    return List<String>.from(data);
+  }
+
+  // ID for weeklies vvv
+
+  static Future<void> saveWeeklyIds(List<String> ids) async {
+    final box = await _getBox();
+    await box.put(weeklyIdsKey, ids);
+  }
+
+  static Future<List<String>> loadWeeklyIds() async {
+    final box = await _getBox();
+    final data = box.get(weeklyIdsKey, defaultValue: []);
+    return List<String>.from(data);
+  }
+
+  // the times for resets vvv
 
   static Future<void> saveDailyReset(DateTime time) async {
     final box = await _getBox();
-    await box.put(dailyKey, time.toIso8601String());
+    await box.put(dailyResetKey, time.toIso8601String());
   }
 
   static Future<DateTime?> loadDailyReset() async {
     final box = await _getBox();
-    final raw = box.get(dailyKey);
-
+    final raw = box.get(dailyResetKey);
     if (raw == null) return null;
-
     return DateTime.tryParse(raw);
   }
 
-  // ============================
-  // 🔥 WEEKLY RESET STORAGE
-  // ============================
-
   static Future<void> saveWeeklyReset(DateTime time) async {
     final box = await _getBox();
-    await box.put(weeklyKey, time.toIso8601String());
+    await box.put(weeklyResetKey, time.toIso8601String());
   }
 
   static Future<DateTime?> loadWeeklyReset() async {
     final box = await _getBox();
-    final raw = box.get(weeklyKey);
-
+    final raw = box.get(weeklyResetKey);
     if (raw == null) return null;
-
     return DateTime.tryParse(raw);
-  }
-
-  // 🔥 CLEAR (FOR TESTING)
-  static Future<void> clear() async {
-    final box = await _getBox();
-    await box.clear();
-    print("🧹 ALL TASKS CLEARED");
   }
 }

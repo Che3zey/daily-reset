@@ -30,12 +30,12 @@ class _TaskInputPageState extends State<TaskInputPage> {
     tasks = List.from(widget.tasks);
   }
 
-  // 🔥 SYNC WITH PARENT (ChallengePage -> Hive)
+  //sync witht he parent(ChallengePage -> Hive)
   void _sync() {
     widget.onTasksUpdated(tasks);
   }
 
-  // 🔥 PICK DEADLINE
+  //picking deadline
   Future<void> _pickDeadline() async {
     final picked = await showDatePicker(
       context: context,
@@ -51,7 +51,7 @@ class _TaskInputPageState extends State<TaskInputPage> {
     }
   }
 
-  // 🔥 ADD TASK
+  //adding tasks
   void _addTask() {
     if (_formKey.currentState!.validate()) {
       if (_type == 'deadline' && _selectedDeadline == null) {
@@ -79,7 +79,7 @@ class _TaskInputPageState extends State<TaskInputPage> {
     }
   }
 
-  // 🔥 DELETE TASK
+  //deleting tasks
   void _deleteTask(int index) {
     setState(() {
       tasks.removeAt(index);
@@ -96,7 +96,7 @@ class _TaskInputPageState extends State<TaskInputPage> {
 
       body: Column(
         children: [
-          // 🔹 INPUT SECTION
+          //the input section
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
@@ -135,7 +135,7 @@ class _TaskInputPageState extends State<TaskInputPage> {
 
                   const SizedBox(height: 10),
 
-                  // 🔥 DEADLINE PICKER
+                  //also for deadline
                   if (_type == 'deadline') ...[
                     ElevatedButton(
                       onPressed: _pickDeadline,
@@ -162,7 +162,7 @@ class _TaskInputPageState extends State<TaskInputPage> {
 
           const Divider(),
 
-          // 🔹 TASK LIST
+          //the task list
           Expanded(
             child: ListView.builder(
               itemCount: tasks.length,

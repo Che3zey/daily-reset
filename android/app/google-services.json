@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "871605088868",
+    "project_id": "daily-reset-cheese",
+    "storage_bucket": "daily-reset-cheese.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871605088868:android:1e55bd84408402df29e571",
+        "android_client_info": {
+          "package_name": "com.example.daily_reset"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_qQuuqR3z70VaqNmBKhKi3oHOZZxh0F8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
