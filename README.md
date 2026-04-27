@@ -1,16 +1,11 @@
 # daily_reset
 
-A new Flutter project.
+Project by Steven Matics
 
-## Getting Started
+APK file located in the Releases folder
 
-This project is a starting point for a Flutter application.
+Android application for completing randomly selected Daily and weekly tasks
+This app features firebase user authentications, persistent data storage via Hive, working dark mode, the ability to add and remove custom challenges, timers stating how long to complete the challenges, and random selection of created tasks to complete. Daily tasks reset everyday at 12AM and weekly tasks reset every sunday at 12AM
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+AI Disclaimer
+The use of Chat GPT was employed to help integrate Hive and Firebase, as well as implementing notifications and dark mode.
